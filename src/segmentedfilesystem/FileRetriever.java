@@ -32,9 +32,16 @@ public class FileRetriever {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
                 socket.send(packet);
 
-                PacketManager manager = new PacketManger();
-                while (manager != null){
+                PacketManager manager = new PacketManager();
+                while (!manager.allPacketsReceived()){
+                        byte[] newBuffer = new byte[1048];
+                        DatagramPacket newPacket = new DatagramPacket(newBuffer,newBuffer.length);
+                        socket.receive(newPacket);
 
+                        byte[] anotherByte = newPacket.getData();
+                        int length = newPacket.getLength();
+
+                        manager.receive(newPacket);
                 }
 
 
