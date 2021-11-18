@@ -14,4 +14,8 @@ public abstract class Packet {
         return fileID;
 
     }
+
+    public byte getStatusByte(){
+        return statusByte;
+    }
 }

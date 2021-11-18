@@ -37,27 +37,10 @@ public class FileRetriever {
                         byte[] newBuffer = new byte[1048];
                         DatagramPacket newPacket = new DatagramPacket(newBuffer,newBuffer.length);
                         socket.receive(newPacket);
-
-                        byte[] anotherByte = newPacket.getData();
-                        int length = newPacket.getLength();
-
                         manager.receive(newPacket);
+
                 }
 
-
-        // Do all the heavy lifting here.
-        // This should
-        //   * Connect to the server
-        //   * Download packets in some sort of loop
-        //   * Handle the packets as they come in by, e.g.,
-        //     handing them to some PacketManager class
-        // Your loop will need to be able to ask someone
-        // if you've received all the packets, and can thus
-        // terminate. You might have a method like
-        // PacketManager.allPacketsReceived() that you could
-        // call for that, but there are a bunch of possible
-        // ways.
 	}
-
 
 }

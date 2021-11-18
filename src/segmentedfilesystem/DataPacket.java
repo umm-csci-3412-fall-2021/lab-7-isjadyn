@@ -20,11 +20,15 @@ public class DataPacket extends Packet{
     }
 
     public byte[] getData(){
-        return this.data;
+        return data;
     }
 
     public boolean isLastPacket(){
-        return false;
+        return this.statusByte % 4 == 3;
 
+    }
+
+    public int getPacketNumber(){
+        return packetNumber;
     }
 }
