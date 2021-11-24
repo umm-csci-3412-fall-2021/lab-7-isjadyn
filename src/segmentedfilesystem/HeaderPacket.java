@@ -9,13 +9,16 @@ public class HeaderPacket extends Packet{
 
     public HeaderPacket(byte[] bytes) {
         super(bytes);
-        statusByte = bytes[0];
-        fileID = bytes[1];
-        fileName = new String (Arrays.copyOfRange(bytes, 2, bytes.length -1));
-    
+        this.fileName = new String (Arrays.copyOfRange(bytes, 2, bytes.length -1));
+        
     }
 
     public String getFileName(){
         return fileName;
     }
+
+    public byte getStatus(){
+        return statusByte;
+    }
+
 }

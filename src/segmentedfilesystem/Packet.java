@@ -7,6 +7,8 @@ public abstract class Packet {
 
     public Packet(byte[] bytes){
         this.bytes = bytes;
+        this.statusByte = bytes[0];
+        this.fileID = bytes[1];
     }
 
 

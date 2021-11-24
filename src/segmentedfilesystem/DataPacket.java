@@ -8,15 +8,13 @@ public class DataPacket extends Packet{
     int packetNumber;
     byte[] data;
 
-    public DataPacket(byte[] bytes) {
+    public DataPacket(byte[] bytes, int packetLength) {
         super(bytes);
-        statusByte = bytes[0];
-        fileID = bytes[1];
         int x = Byte.toUnsignedInt(bytes[2]);
         int y = Byte.toUnsignedInt(bytes[3]);
         packetNumber = 256 * x + y;
         data = Arrays.copyOfRange(bytes, 4, bytes.length);
-    
+
     }
 
     public byte[] getData(){
@@ -30,5 +28,10 @@ public class DataPacket extends Packet{
 
     public int getPacketNumber(){
         return packetNumber;
+    }
+
+
+    public byte getStatus(){
+        return statusByte;
     }
 }
