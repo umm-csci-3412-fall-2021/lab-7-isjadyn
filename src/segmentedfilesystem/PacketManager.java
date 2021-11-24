@@ -1,32 +1,78 @@
 package segmentedfilesystem;
 
 import java.net.DatagramPacket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class PacketManager {
-    public int finalID = 0;
+    HashMap<String, ReceivedFile> files;
+
+    public PacketManager(){
+        files = new HashMap<>();
+    }
 
     public boolean allPacketsReceived() {
-        return true;
+        ArrayList<Boolean> allReceived = new ArrayList<>();
+
+        for(ReceivedFile file : files.values()){
+            if (file.isAllReceived()){
+                allReceived.add(true);
+            }
+            else{
+                allReceived.add(false);
+            }
+        }
+
+        //checks is the hashmap is empty or contains any incomplete files
+        if(allReceived.contains(false) || allReceived.isEmpty()){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     public void receive(DatagramPacket packet){
         byte[] abyte = packet.getData();
         byte status = abyte[0];
-        byte fileID = abyte[1];
-        byte[] fileName = Arrays.copyOfRange(abyte,2, abyte.length -1);
-
+        
         //header packet
         if(status % 2 == 0){
+           HeaderPacket header = new HeaderPacket(packet.getData());
+           String fileID = header.getFileID() + "";
 
+           if(!files.containsKey(fileID)){
+                ReceivedFile newFile = new ReceivedFile();
+                newFile.addHP(header);
+                files.put(fileID,newFile);
+           }
+           else{
+               files.get(fileID).addHP(header);
+           }
         } 
         //data packet
         else {
-            if(status % 4 ==3){
-                finalID = fileID;
+           DataPacket data = new DataPacket(packet.getData(), packet.getLength());
+           String fileID = data.getFileID() + "";
+
+           if(!files.containsKey(fileID)){
+            ReceivedFile newFile = new ReceivedFile();
+            newFile.addDP(data);
+            files.put(fileID,newFile);
+            }
+            else{
+                files.get(fileID).addDP(data);
             }
 
         }
+
     }
 
+    public void writeFiles(){
+        for(ReceivedFile file : files.values()){
+            file.writeToFile();
+        }
+    }
 }

@@ -40,6 +40,7 @@ public class FileRetriever {
                         manager.receive(newPacket);
 
                 }
+                manager.writeFiles();
 
 	}
 
