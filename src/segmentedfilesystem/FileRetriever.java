@@ -9,14 +9,14 @@ import java.net.SocketException;
 
 public class FileRetriever {
 
-	private InetAddress server;
+	private String server;
         private int port;
 
         public FileRetriever(String server, int port) throws SocketException {
         // Save the server and port for use in `downloadFiles()`
         //...
         this.port = port;
-        InetAddress server = InetAddress.getByName(server);
+        InetAddress address = InetAddress.getByName(server);
 
 	}
 
