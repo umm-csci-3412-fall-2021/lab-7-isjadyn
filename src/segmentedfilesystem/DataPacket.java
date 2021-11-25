@@ -13,7 +13,7 @@ public class DataPacket extends Packet{
         int x = Byte.toUnsignedInt(bytes[2]);
         int y = Byte.toUnsignedInt(bytes[3]);
         this.packetNumber = 256 * x + y;
-        this.data = Arrays.copyOfRange(bytes, 4, bytes.length);
+        this.data = Arrays.copyOfRange(bytes, 4, packetLength);
 
     }
 

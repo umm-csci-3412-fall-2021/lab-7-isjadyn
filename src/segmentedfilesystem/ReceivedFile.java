@@ -60,14 +60,4 @@ public class ReceivedFile {
         return size;
     }
 
-    //Credit to Jeff and Biruk- Thanks!
-    public void writeToFile(){
-        try{
-            FileOutputStream output = new FileOutputStream(System.getProperty("user.dir") + "/" + fileName.trim());
-            output.write(getBytes());
-       }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
 }

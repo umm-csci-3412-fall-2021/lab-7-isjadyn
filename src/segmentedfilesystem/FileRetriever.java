@@ -11,8 +11,7 @@ public class FileRetriever {
 
 	private InetAddress server;
         private int port;
-        private DatagramSocket socket = null; 
-
+        
         public FileRetriever(String server, int port) throws SocketException {
         // Save the server and port for use in `downloadFiles()`
         //...
@@ -27,9 +26,11 @@ public class FileRetriever {
                 byte[] buffer = new byte[1048];
                 InetAddress address = InetAddress.getByName(server);
                 PacketManager manager = new PacketManager();
-                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+                try{
+                        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+                        socket.send(packet);
+                } catch(IOException e) {e.printStackTrace();}
                 
-                socket.send(packet);
 
                 while (!manager.allPacketsReceived()){
                         byte[] newBuffer = new byte[1048];
