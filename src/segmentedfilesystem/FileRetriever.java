@@ -16,7 +16,7 @@ public class FileRetriever {
         // Save the server and port for use in `downloadFiles()`
         //...
         this.port = port;
-        InetAddress address = InetAddress.getByName(server);
+        this.server = server;
 
 	}
 
@@ -24,6 +24,8 @@ public class FileRetriever {
                 byte[] buffer = new byte[1048];
                 DatagramSocket socket = new DatagramSocket();
                 PacketManager manager = new PacketManager();
+                InetAddress address = Inet4Address.getByName(server);
+                
                 try{
                         DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
                         socket.send(packet);
