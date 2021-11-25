@@ -11,20 +11,18 @@ public class FileRetriever {
 
 	private InetAddress server;
         private int port;
-        
+
         public FileRetriever(String server, int port) throws SocketException {
         // Save the server and port for use in `downloadFiles()`
         //...
-        this.server = server;
         this.port = port;
-        DatagramSocket socket = new DatagramSocket();
-        this.socket = socket;
+        InetAddress server = InetAddress.getByName(server);
 
 	}
 
 	public void downloadFiles() throws IOException {
                 byte[] buffer = new byte[1048];
-                InetAddress address = InetAddress.getByName(server);
+                DatagramSocket socket = new DatagramSocket();
                 PacketManager manager = new PacketManager();
                 try{
                         DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
