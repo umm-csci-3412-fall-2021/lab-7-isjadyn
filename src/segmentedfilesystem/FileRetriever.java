@@ -9,7 +9,7 @@ import java.net.SocketException;
 
 public class FileRetriever {
 
-	private String server;
+	private InetAddress server;
         private int port;
         private DatagramSocket socket = null; 
 
@@ -21,18 +21,16 @@ public class FileRetriever {
         DatagramSocket socket = new DatagramSocket();
         this.socket = socket;
 
-
 	}
 
 	public void downloadFiles() throws IOException {
                 byte[] buffer = new byte[1048];
                 InetAddress address = InetAddress.getByName(server);
-
-        
+                PacketManager manager = new PacketManager();
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+                
                 socket.send(packet);
 
-                PacketManager manager = new PacketManager();
                 while (!manager.allPacketsReceived()){
                         byte[] newBuffer = new byte[1048];
                         DatagramPacket newPacket = new DatagramPacket(newBuffer,newBuffer.length);
