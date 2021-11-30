@@ -61,7 +61,12 @@ public class ReceivedFile {
     }
 
     public void writeToFile() {
-        FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/"+ fileName.trim());
-        stream.write(getBytes());
+        try {
+			FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/" + fileName.trim());
+			stream.write(getBytes());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+        
     }
 }

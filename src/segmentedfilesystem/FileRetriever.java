@@ -24,7 +24,7 @@ public class FileRetriever {
                 byte[] buffer = new byte[1048];
                 DatagramSocket socket = new DatagramSocket();
                 PacketManager manager = new PacketManager();
-                InetAddress address = Inet4Address.getByName(server);
+                InetAddress address = InetAddress.getByName(server);
                 
                 try{
                         DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
@@ -40,6 +40,7 @@ public class FileRetriever {
 
                 }
                 manager.writeFiles();
+                socket.close();
 
 	}
 
