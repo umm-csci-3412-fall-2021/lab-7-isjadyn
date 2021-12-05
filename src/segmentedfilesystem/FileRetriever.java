@@ -26,10 +26,8 @@ public class FileRetriever {
                 PacketManager manager = new PacketManager();
                 InetAddress address = InetAddress.getByName(server);
                 
-                try{
-                        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
-                        socket.send(packet);
-                } catch(IOException e) {e.printStackTrace();}
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+                socket.send(packet);
                 
 
                 while (!manager.allPacketsReceived()){

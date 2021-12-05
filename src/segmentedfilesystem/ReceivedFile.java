@@ -5,40 +5,47 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class ReceivedFile {
-    private SortedMap<Integer, byte[]> packets;
-    private String fileName;
-    private boolean allReceived;
-    private int packetNumber;
-    private int counter;
+    SortedMap<Integer, byte[]> packets;
+    String fileName;
+    byte ID;
+    boolean done;
+    boolean finalPacketHere;
+    int finalPacketNumber;
+    int counter;
 
     public ReceivedFile(){
-        packets = new TreeMap<>();
-        allReceived = false;
+        this.packets = new TreeMap<>();
+        this.done = false;
+        this.ID = ID;
+        this.finalPacketNumber = -1;
     }
 
     public boolean isAllReceived(){
-        return allReceived;
+        return done;
     }
 
     public void addDP(DataPacket packet){
         packets.put(packet.getPacketNumber(),packet.getData());
-        counter++;
-        if(packet.isLastPacket()){
-            packetNumber = packet.getPacketNumber();
+
+        boolean done = true;
+
+        if (!finalPacketHere) 
+            {done = false;}
+
+        for(int i=0; i< finalPacketNumber; i++){
+            if(!this.packets.containsKey(i)){
+                done = false;
+                break;
+            }
         }
-        checkAllReceived();
+        this.done= done;
     }
 
     public void addHP(HeaderPacket packet){
-        this.fileName= packet.getFileName();
-        checkAllReceived();
+        ID= packet.getFileID();
+        fileName = packet.getFileName();
     }
 
-    public void checkAllReceived(){
-        if(counter -1 == packetNumber && fileName != null){
-            allReceived = true;
-        }
-    }
 
     public byte[] getBytes(){
         byte[] fileBytes = new byte[getFileSize()];
@@ -64,9 +71,10 @@ public class ReceivedFile {
         try {
 			FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/" + fileName.trim());
 			stream.write(getBytes());
+            stream.close();
 		} catch(Exception e) {
 			e.printStackTrace();
-		}
+        }
         
     }
 }
