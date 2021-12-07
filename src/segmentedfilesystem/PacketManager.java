@@ -23,6 +23,8 @@ public class PacketManager {
             }
         }
 
+        System.out.println("\tallReceived = " + allReceived);
+
         //checks is the hashmap is empty or contains any incomplete files
         if(allReceived.contains(false) || allReceived.isEmpty()){
             return false;
@@ -33,12 +35,13 @@ public class PacketManager {
     }
 
     public void receive(DatagramPacket packet){
+        System.out.println("Handling a packet in PacketManager.receive()");
         byte[] abyte = packet.getData();
         byte status = abyte[0];
         
         //header packet
         if(status % 2 == 0){
-           HeaderPacket header = new HeaderPacket(packet.getData());
+           HeaderPacket header = new HeaderPacket(packet.getData(), packet.getLength());
            String fileID = header.getFileID() + "";
 
            if(!files.containsKey(fileID)){
@@ -47,7 +50,9 @@ public class PacketManager {
                 files.put(fileID,newFile);
            }
            else{
-               files.get(fileID).addHP(header);
+               ReceivedFile file = files.get(fileID);
+               file.addHP(header);
+               files.put(fileID, file);
            }
         } 
         //data packet
@@ -73,4 +78,6 @@ public class PacketManager {
             file.writeToFile();
         }
     }
+
+
 }

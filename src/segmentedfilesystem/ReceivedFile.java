@@ -25,20 +25,28 @@ public class ReceivedFile {
     }
 
     public void addDP(DataPacket packet){
+        System.out.println("processing packet # " + packet.getPacketNumber() + " for file ID " + ID + " with name " + fileName);
         packets.put(packet.getPacketNumber(),packet.getData());
 
         boolean done = true;
 
+        if (packet.isLastPacket()){
+            finalPacketHere = true;
+            finalPacketNumber = packet.getPacketNumber();
+        }
         if (!finalPacketHere) 
             {done = false;}
 
         for(int i=0; i< finalPacketNumber; i++){
-            if(!this.packets.containsKey(i)){
+            if (!packets.containsKey(i)) {
                 done = false;
                 break;
             }
         }
         this.done= done;
+        
+
+        System.out.println("\tDone for file " + ID + " is " + done);
     }
 
     public void addHP(HeaderPacket packet){
@@ -69,7 +77,7 @@ public class ReceivedFile {
 
     public void writeToFile() {
         try {
-			FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/" + fileName.trim());
+			FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/" + fileName);
 			stream.write(getBytes());
             stream.close();
 		} catch(Exception e) {
@@ -77,4 +85,6 @@ public class ReceivedFile {
         }
         
     }
+
+
 }

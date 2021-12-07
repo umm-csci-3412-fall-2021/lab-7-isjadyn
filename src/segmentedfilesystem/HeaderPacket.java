@@ -7,9 +7,9 @@ public class HeaderPacket extends Packet{
     byte fileID;
     String fileName;
 
-    public HeaderPacket(byte[] bytes) {
+    public HeaderPacket(byte[] bytes, int length) {
         super(bytes);
-        this.fileName = new String (Arrays.copyOfRange(bytes, 2, bytes.length -1));
+        this.fileName = new String (Arrays.copyOfRange(bytes, 2, length));
         
     }
 

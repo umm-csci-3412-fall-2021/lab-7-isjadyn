@@ -3,7 +3,6 @@ package segmentedfilesystem;
 import java.util.Arrays;
 
 public class DataPacket extends Packet{
-    byte statusByte;
     byte fileID;
     int packetNumber;
     byte[] data;

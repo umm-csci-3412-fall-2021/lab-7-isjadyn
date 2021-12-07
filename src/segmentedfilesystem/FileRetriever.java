@@ -31,11 +31,14 @@ public class FileRetriever {
                 
 
                 while (!manager.allPacketsReceived()){
+                        System.out.println("About to process a packet in FileRetriever");
                         byte[] newBuffer = new byte[1048];
                         DatagramPacket newPacket = new DatagramPacket(newBuffer,newBuffer.length);
+                        System.out.println("About to request another packet");
                         socket.receive(newPacket);
+                        System.out.println("\tGot another packet");
                         manager.receive(newPacket);
-
+                        System.out.println("\tProcessed a packet in FileRetriever");
                 }
                 manager.writeFiles();
                 socket.close();
