@@ -1,25 +1,48 @@
 package segmentedfilesystem;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+
+
 public class FileRetriever {
 
-	public FileRetriever(String server, int port) {
+	private String server;
+        private int port;
+
+        public FileRetriever(String server, int port) throws SocketException {
         // Save the server and port for use in `downloadFiles()`
         //...
+        this.port = port;
+        this.server = server;
+
 	}
 
-	public void downloadFiles() {
-        // Do all the heavy lifting here.
-        // This should
-        //   * Connect to the server
-        //   * Download packets in some sort of loop
-        //   * Handle the packets as they come in by, e.g.,
-        //     handing them to some PacketManager class
-        // Your loop will need to be able to ask someone
-        // if you've received all the packets, and can thus
-        // terminate. You might have a method like
-        // PacketManager.allPacketsReceived() that you could
-        // call for that, but there are a bunch of possible
-        // ways.
+	public void downloadFiles() throws IOException {
+                byte[] buffer = new byte[1048];
+                DatagramSocket socket = new DatagramSocket();
+                PacketManager manager = new PacketManager();
+                InetAddress address = InetAddress.getByName(server);
+                
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+                socket.send(packet);
+                
+
+                while (!manager.allPacketsReceived()){
+                        System.out.println("About to process a packet in FileRetriever");
+                        byte[] newBuffer = new byte[1048];
+                        DatagramPacket newPacket = new DatagramPacket(newBuffer,newBuffer.length);
+                        System.out.println("About to request another packet");
+                        socket.receive(newPacket);
+                        System.out.println("\tGot another packet");
+                        manager.receive(newPacket);
+                        System.out.println("\tProcessed a packet in FileRetriever");
+                }
+                manager.writeFiles();
+                socket.close();
+
 	}
 
 }
